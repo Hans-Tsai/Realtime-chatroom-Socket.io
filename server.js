@@ -39,7 +39,13 @@ io.on("connection", (socket) => {
         "message",
         formatMessage(botName, `${user.username} has joined the chat`)
       ); // this is to all the clients except the client that's connecting
-  });
+      
+      // Send users and room info
+      io.to(user.room).emit('roomUsers', {
+        room: user.room,
+        users: getRoomUsers(user.room),
+      });
+    });
 
   // Listen for chatMessage
   socket.on("chatMessage", (msg) => {
