@@ -30,7 +30,7 @@ This side project practice is refered to [chatcord app](https://github.com/bradt
 - Output message to DOM(not only on chrome console log). Use innerHTML syntax => [./public/js/main.js](./public/js/main.js) `function outputMessage(message) { .......}`、`outputMessage(message);`
 - Scroll down the chatroom sidebar automatically => [./public/js/main.js](./public/js/main.js) `chatMessages.scrollTop = chatMessages.scrollHeight;`
 - Clear input => [./public/js/main.js](./public/js/main.js) `e.target.elements.msg.value = ''; e.target.elements.msg.focus();`
-
+- Wrap all strings into `formatMessage()` function => [./utils/messages.js](./utils/messages.js). Besides, use `module.exports` syntax to export this module.
 
 
 
