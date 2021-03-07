@@ -20,20 +20,26 @@ This side project practice is refered to [chatcord app](https://github.com/bradt
 - Add `socket.io.js` script tag(frontend library) into [./public/chat.html](./public/chat.html) `<script src="/socket.io/socket.io.js"></script>`. So we can access the I/O method and everything we need in the [./public/js/main.js](./public/js/main.js)
 - Broadcast when a user connects => [./server.js](./server.js) `socket.broadcast.emit()`
 - Run when client disconnects => [./server.js](./server.js) `socket.on('disconnect')`
-- Message submit => [./public/js/main.js](./public/js/main.js) `chatForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  let msg = e.target.elements.msg.value;
-  socket.emit('chatMessage', msg);
-});
-` to emit message to server
+- Message submit => [./public/js/main.js](./public/js/main.js)
+  + ```js
+      chatForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let msg = e.target.elements.msg.value;
+        socket.emit('chatMessage', msg);
+      });
+      ```
+  * to emit message to server
 - Listen for chatMessage => [./server.js](./server.js) `socket.on('chatMessage')`
 - Output message to DOM(not only on chrome console log). Use innerHTML syntax => [./public/js/main.js](./public/js/main.js) `function outputMessage(message) { .......}`、`outputMessage(message);`
 - Scroll down the chatroom sidebar automatically => [./public/js/main.js](./public/js/main.js) `chatMessages.scrollTop = chatMessages.scrollHeight;`
 - Clear input => [./public/js/main.js](./public/js/main.js) `e.target.elements.msg.value = ''; e.target.elements.msg.focus();`
 - Wrap all strings into `formatMessage()` function => [./utils/messages.js](./utils/messages.js). Besides, use `module.exports` syntax to export this module.
-- Get username and room from URL => [./public/js/main.js](./public/js/main.js) `const { username, room } = Qs.parse(location.search, {
-  ignoreQueryPrefix: true,
-});`
+- Get username and room from URL => [./public/js/main.js](./public/js/main.js)
+  + ```js
+      const { username, room } = Qs.parse(location.search, {
+        ignoreQueryPrefix: true,
+      });
+    ```
 - Join chatroom(client) => [./public/js/main.js](./public/js/main.js) `socket.emit('joinRoom', { username, room });`
 - Join chatroom(server) => [./server.js](./server.js) `socket.on('joinRoom', ({ username, room }) => { ..... });`
 - Add `userJoin(id, username, room)`、`getCurrentUser(id)` users functions in `./utils/` folder => [./utils/users.js](./utils/users.js)
@@ -85,6 +91,22 @@ This side project practice is refered to [chatcord app](https://github.com/bradt
           return users.filter(user => user.room === room)
         };
       ```
+- Send users and room info => [./server.js](./server.js)
+  + ```js
+      io.to(user.room).emit('roomUsers', {
+        room: user.room,
+        users: getRoomUsers(user.room),
+      });
+    ```
+- Get room and users => [./public/js/main.js](./public/js/main.js)
+  + ```js
+      socket.on('roomUsers', ({ room, users }) => {
+        outputRoomName(room);
+        outputUsers(users);
+      });
+    ```
+- Add `outputRoomName(room)`、`outputUsers(users)` functions into [./public/js/main.js](./public/js/main.js)
+  
 
 
 
