@@ -36,7 +36,7 @@ This side project practice is refered to [chatcord app](https://github.com/bradt
 });`
 - Join chatroom(client) => [./public/js/main.js](./public/js/main.js) `socket.emit('joinRoom', { username, room });`
 - Join chatroom(server) => [./server.js](./server.js) `socket.on('joinRoom', ({ username, room }) => { ..... });`
-- Add users module in `./utils/` folder => [./utils/users.js](./utils/users.js)
+- Add `userJoin(id, username, room)`、`getCurrentUser(id)` users functions in `./utils/` folder => [./utils/users.js](./utils/users.js)
   + Join user to chat
     * ```js
         function userJoin(id, username, room) {
@@ -68,8 +68,23 @@ This side project practice is refered to [chatcord app](https://github.com/bradt
         users: getRoomUsers(user.room),
       });
     ```
-- 
+- Add `userLeave(id)`、`getRoomUsers(room)` users functions in `./utils/` folder => [./utils/users.js](./utils/users.js)
+  + User leaves chat
+    * ```js
+        function userLeave(id) {
+          const index = users.findIndex(user => user.id === id)
 
+          if(index !== -1) {
+            return users.splice(index, 1)[0];
+          }
+        }
+      ```
+  + Get room users
+    * ```js
+        function getRoomUsers(room) {
+          return users.filter(user => user.room === room)
+        };
+      ```
 
 
 
